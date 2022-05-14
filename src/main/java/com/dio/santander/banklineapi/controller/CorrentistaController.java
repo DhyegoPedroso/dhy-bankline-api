@@ -15,7 +15,7 @@ import com.dio.santander.banklineapi.repository.CorrentistaRepository;
 import com.dio.santander.banklineapi.service.CorrentistaServices;
 
 @RestController
-@RequestMapping("/correntitas")
+@RequestMapping("/correntistas")
 public class CorrentistaController {
 
 	@Autowired
