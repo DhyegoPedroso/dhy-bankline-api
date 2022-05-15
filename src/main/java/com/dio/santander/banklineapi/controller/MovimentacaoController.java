@@ -13,31 +13,28 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dio.santander.banklineapi.dto.NovaMovimentacao;
 import com.dio.santander.banklineapi.model.Movimentacao;
 import com.dio.santander.banklineapi.repository.MovimentacaoRepository;
-import com.dio.santander.banklineapi.service.MovimentacaoServices;
+import com.dio.santander.banklineapi.service.MovimentacaoService;
 
 @RestController
 @RequestMapping("/movimentacoes")
 public class MovimentacaoController {
-
+	
 	@Autowired
 	private MovimentacaoRepository repository;
-
+	
 	@Autowired
-	private MovimentacaoServices services;
-
+	private MovimentacaoService service;
+	
 	@GetMapping
-	public List<Movimentacao> findAll() {
+	public List<Movimentacao> findAll(){
 		return repository.findAll();
 	}
-	
 	@GetMapping("/{idConta}")
 	public List<Movimentacao> findAll(@PathVariable("idConta") Integer idConta){
 		return repository.findByIdConta(idConta);
 	}
-
 	@PostMapping
-	public void save(@RequestBody NovaMovimentacao novaMovimentacao) {
-		services.save(novaMovimentacao);
+	public void save(@RequestBody NovaMovimentacao movimentacao) {
+		service.save(movimentacao);
 	}
-
 }

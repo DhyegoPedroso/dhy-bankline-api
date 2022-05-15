@@ -13,38 +13,35 @@ import com.dio.santander.banklineapi.repository.CorrentistaRepository;
 import com.dio.santander.banklineapi.repository.MovimentacaoRepository;
 
 @Service
-public class MovimentacaoServices {
-
+public class MovimentacaoService {
+	
 	@Autowired
 	private MovimentacaoRepository repository;
-
+	
 	@Autowired
 	private CorrentistaRepository correntistaRepository;
-
+	
 	public void save(NovaMovimentacao novaMovimentacao) {
-
-		Movimentacao movimentacao = new Movimentacao();
-
+		Movimentacao movimentacao = new Movimentacao();			
+		
 		Double valor = novaMovimentacao.getValor();
-		if (novaMovimentacao.getMovimentacaoTipo() == MovimentacaoTipo.DESPESA) {
+		if(novaMovimentacao.getTipo() == MovimentacaoTipo.DESPESA)
 			valor = valor * -1;
-		}
-
+			
 		movimentacao.setDataHora(LocalDateTime.now());
 		movimentacao.setDescricao(novaMovimentacao.getDescricao());
 		movimentacao.setIdConta(novaMovimentacao.getIdConta());
-		movimentacao.setMovimentacaoTipo(novaMovimentacao.getMovimentacaoTipo());
+		movimentacao.setTipo(novaMovimentacao.getTipo());
 		movimentacao.setValor(valor);
-
+		
 		Correntista correntista = correntistaRepository.findById(novaMovimentacao.getIdConta()).orElse(null);
-
-		if (correntista != null) {
+		
+		if(correntista != null) {
 			correntista.getConta().setSaldo(correntista.getConta().getSaldo() + valor);
 			correntistaRepository.save(correntista);
-		} 
-
+		}
+		
 		repository.save(movimentacao);
-
+		
 	}
-
 }
